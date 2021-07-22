@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'flutodo.apps.FlutodoConfig',
+    'flutodo_api.apps.FlutodoConfig',
     'rest_framework',
 ]
 
