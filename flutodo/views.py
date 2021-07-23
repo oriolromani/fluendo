@@ -10,7 +10,7 @@ from flutodo_api.serializers import ToDoItemSerializer
 
 
 class ToDoList(LoginRequiredMixin, APIView):
-    login_url = "api/accounts/login"
+    login_url = "accounts/login"
     renderer_classes = [TemplateHTMLRenderer]
     template_name = "todo_list.html"
 
@@ -29,7 +29,7 @@ class ToDoList(LoginRequiredMixin, APIView):
 
 
 class ToDoDetail(LoginRequiredMixin, APIView):
-    login_url = "api/accounts/login"
+    login_url = "accounts/login"
     permission_classes = [permissions.IsAuthenticated]
     renderer_classes = [TemplateHTMLRenderer]
     template_name = "todo_detail.html"
