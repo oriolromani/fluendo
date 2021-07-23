@@ -1,0 +1,12 @@
+{% load rest_framework %}
+
+<html><body>
+<h1>ToDo {todo.name}</h1>
+<li>{{ todo.is_complete }}</li>
+
+<form action="{% url 'todo_detail' pk=todo.pk %}" method="POST">
+    {% csrf_token %}
+    {% render_form serializer %}
+    <input type="submit" value="Save">
+</form>
+</body></html>
