@@ -18,5 +18,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('flutodo.urls')),
     path('api/', include('flutodo_api.urls')),
 ]
