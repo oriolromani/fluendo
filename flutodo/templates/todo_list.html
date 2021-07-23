@@ -1,17 +1,18 @@
+{% extends 'base.html' %}
 {% load rest_framework %}
 
-<html><body>
-<h2>ToDo list</h2>
-<ul>
-    {% for todo in todos %}
-    <li> <a href="{% url 'todo_detail' pk=todo.pk %}">{{ todo.name }}</a> {{ todo.is_complete }} </li>
-    {% endfor %}
-</ul>
+{% block content %}
+    <h2>ToDo list</h2>
+    <ul>
+        {% for todo in todos %}
+        <li> <a href="{% url 'todo_detail' pk=todo.pk %}">{{ todo.name }}</a> {{ todo.is_complete }} </li>
+        {% endfor %}
+    </ul>
 
-<h2>Create a ToDo</h2>
-<form action="{% url 'todo_list' %}" method="POST">
-    {% csrf_token %}
-    {% render_form serializer %}
-    <input type="submit" value="Save">
-</form>
-</body></html>
+    <h2>Create a ToDo</h2>
+    <form action="{% url 'todo_list' %}" method="POST">
+        {% csrf_token %}
+        {% render_form serializer %}
+        <input type="submit" value="Save">
+    </form>
+{% endblock %}
