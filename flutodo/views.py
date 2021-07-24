@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from django.shortcuts import redirect, get_object_or_404
 from rest_framework import permissions
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
+from django.contrib import messages
 
 from flutodo_api.models import ToDoItem
 from flutodo_api.serializers import (
@@ -18,8 +18,8 @@ class ToDoList(LoginRequiredMixin, APIView):
     renderer_classes = [TemplateHTMLRenderer]
     template_name = "todo_list.html"
 
-    def get(self, request):
-        queryset = ToDoItem.objects.all()
+    def get(self, request, *args, **kwargs):
+        queryset = ToDoItem.objects.order_by('id')
         serializer = ToDoItemSerializer
         return Response({"todos": queryset,
                          "serializer": serializer})
@@ -52,11 +52,35 @@ class TodoRemove(LoginRequiredMixin, APIView):
         """
         todo = get_object_or_404(ToDoItem, pk=pk)
         todo.delete()
-        return redirect('todo_list')
+        messages.success(request,
+                         "Todo item {} has been deleted correctly".format(
+                             todo.name))
+        return redirect("todo_list")
 
 
-def modify_is_completed(request):
-    todo = ToDoItem.objects.get(pk=request.POST['id'])
-    todo.is_complete = request.POST['iscomplete'] == 'true'
-    todo.save()
-    return HttpResponse('success')
+class TodoComplete(LoginRequiredMixin, APIView):
+    login_url = "accounts/login"
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        """
+        Remove object
+        """
+        todo = get_object_or_404(ToDoItem, pk=pk)
+        todo.is_complete = True
+        todo.save()
+        return redirect("todo_list")
+
+
+class TodoUncomplete(LoginRequiredMixin, APIView):
+    login_url = "accounts/login"
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        """
+        Remove object
+        """
+        todo = get_object_or_404(ToDoItem, pk=pk)
+        todo.is_complete = False
+        todo.save()
+        return redirect("todo_list")
