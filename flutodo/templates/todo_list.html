@@ -3,26 +3,24 @@
 
 {% block content %}
     <h2>ToDo list</h2>
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
     <ul>
         {% for todo in todos %}
         <li>
             {{ todo.name }}
             <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="checkbox" {% if todo.is_complete == True %} checked {% else %} '' {% endif %}>
-                <label class="form-check-label" for="checkbox"></label>
+                <input class="form-check-input" type="checkbox" id="checkbox-{{todo.id}}" {% if todo.is_complete == True %} checked {% else %} '' {% endif %}>
+                <label class="form-check-label" for="checkbox"> Is completed</label>
             </div>
-            <script src="https://code.jquery.com/jquery-3.3.1.js"></script> <!-- Import Jquery Here-->
-            <script type="text/javascript">
-            $(document).ready(function() {
-                $('#checkbox').change(function() {
-                    $.post("/modify/", {
-                        id: '{{todo.id}}',
-                        iscomplete: this.checked,
-                        csrfmiddlewaretoken: '{{ csrf_token }}'
-                    });
-                });
-            });
-            </script>
+            <form method="POST" action="{% if todo.is_complete %}uncomplete{% else %}complete{%endif%}/{{todo.pk}}">
+                {% csrf_token %}
+                <input type="submit" value="{% if todo.is_complete %}uncomplete{% else %}complete{%endif%}">
+            </form>
+
             <form action="{% url 'todo_remove' pk=todo.pk%}" method="POST">
                 {% csrf_token %}
                 <input type="submit" value="Remove">
@@ -33,6 +31,4 @@
     <button type="button">
         <a href="{% url 'todo_create' %}"> New </a>
     </button>
-
-
 {% endblock %}
