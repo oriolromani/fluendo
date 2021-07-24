@@ -4,9 +4,13 @@ from rest_framework.views import APIView
 from django.shortcuts import redirect, get_object_or_404
 from rest_framework import permissions
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 
 from flutodo_api.models import ToDoItem
-from flutodo_api.serializers import ToDoItemSerializer
+from flutodo_api.serializers import (
+    ToDoItemSerializer,
+    ToDoItemCreateSerializer
+)
 
 
 class ToDoList(LoginRequiredMixin, APIView):
@@ -20,29 +24,39 @@ class ToDoList(LoginRequiredMixin, APIView):
         return Response({"todos": queryset,
                          "serializer": serializer})
 
+
+class ToDoCreate(LoginRequiredMixin, APIView):
+    login_url = "accounts/login"
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = "todo_create.html"
+
+    def get(self, request):
+        serializer = ToDoItemCreateSerializer
+        return Response({"serializer": serializer})
+
     def post(self, request):
-        serializer = ToDoItemSerializer(data=request.data)
+        serializer = ToDoItemCreateSerializer(data=request.data)
         if not serializer.is_valid():
             return Response({'serializer': serializer})
         serializer.save()
         return redirect("todo_list")
 
 
-class ToDoDetail(LoginRequiredMixin, APIView):
+class TodoRemove(LoginRequiredMixin, APIView):
     login_url = "accounts/login"
     permission_classes = [permissions.IsAuthenticated]
-    renderer_classes = [TemplateHTMLRenderer]
-    template_name = "todo_detail.html"
-
-    def get(self, request, pk):
-        todo = get_object_or_404(ToDoItem, pk=pk)
-        serializer = ToDoItemSerializer(todo)
-        return Response({"serializer": serializer, "todo": todo})
 
     def post(self, request, pk):
+        """
+        Remove object
+        """
         todo = get_object_or_404(ToDoItem, pk=pk)
-        serializer = ToDoItemSerializer(todo, data=request.data)
-        if not serializer.is_valid():
-            return Response({'serializer': serializer, 'todo': todo})
-        serializer.save()
-        return redirect('todo_detail', pk=pk)
+        todo.delete()
+        return redirect('todo_list')
+
+
+def modify_is_completed(request):
+    todo = ToDoItem.objects.get(pk=request.POST['id'])
+    todo.is_complete = request.POST['iscomplete'] == 'true'
+    todo.save()
+    return HttpResponse('success')

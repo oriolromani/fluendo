@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'flutodo_api.apps.FlutodoConfig',
     'rest_framework',
     'accounts',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [
