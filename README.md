@@ -19,3 +19,6 @@ To run it with docker just follow this steps:
     docker-compose up
 ```
 Then go to [localhost:8000](http://localhost:8000) on your browser
+
+## REST API documentation
+You can access the documentation of the REST API on [/api/docs](http://localhost:8000/api/docs)

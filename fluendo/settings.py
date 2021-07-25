@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'accounts',
     'bootstrap4',
     'django_bootstrap_icons',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -139,3 +140,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+SWAGGER_SETTINGS = {
+    "exclude_namespaces": [""],    #  List URL namespaces to ignore
+}

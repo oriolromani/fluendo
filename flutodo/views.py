@@ -17,6 +17,7 @@ class ToDoList(LoginRequiredMixin, APIView):
     login_url = "accounts/login"
     renderer_classes = [TemplateHTMLRenderer]
     template_name = "todo_list.html"
+    swagger_schema = None
 
     def get(self, request, *args, **kwargs):
         queryset = ToDoItem.objects.order_by('id')
@@ -29,6 +30,7 @@ class ToDoCreate(LoginRequiredMixin, APIView):
     login_url = "accounts/login"
     renderer_classes = [TemplateHTMLRenderer]
     template_name = "todo_create.html"
+    swagger_schema = None
 
     def get(self, request):
         serializer = ToDoItemCreateSerializer
@@ -45,6 +47,7 @@ class ToDoCreate(LoginRequiredMixin, APIView):
 class TodoRemove(LoginRequiredMixin, APIView):
     login_url = "accounts/login"
     permission_classes = [permissions.IsAuthenticated]
+    swagger_schema = None
 
     def post(self, request, pk):
         """
@@ -61,6 +64,7 @@ class TodoRemove(LoginRequiredMixin, APIView):
 class TodoComplete(LoginRequiredMixin, APIView):
     login_url = "accounts/login"
     permission_classes = [permissions.IsAuthenticated]
+    swagger_schema = None
 
     def post(self, request, pk):
         """
@@ -75,6 +79,7 @@ class TodoComplete(LoginRequiredMixin, APIView):
 class TodoUncomplete(LoginRequiredMixin, APIView):
     login_url = "accounts/login"
     permission_classes = [permissions.IsAuthenticated]
+    swagger_schema = None
 
     def post(self, request, pk):
         """
