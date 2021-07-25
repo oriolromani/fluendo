@@ -1,13 +1,19 @@
 from rest_framework import permissions
 from .models import ToDoItem
-from .serializers import ToDoItemSerializer
+from .serializers import ToDoItemSerializer, ToDoItemCreateSerializer
 from rest_framework import generics
 
 
-class ToDoItemListCreate(generics.ListCreateAPIView):
+class ToDoItemList(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
     queryset = ToDoItem.objects.all()
     serializer_class = ToDoItemSerializer
+
+
+class TodoItemCreate(generics.CreateAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = ToDoItem.objects.all()
+    serializer_class = ToDoItemCreateSerializer
 
 
 class ToDoItemDetail(generics.RetrieveUpdateDestroyAPIView):
