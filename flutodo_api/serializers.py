@@ -5,10 +5,10 @@ from .models import ToDoItem
 class ToDoItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = ToDoItem
-        fields = ('id', 'name', 'is_complete')
+        fields = ("id", "name", "is_complete")
 
 
 class ToDoItemCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = ToDoItem
-        fields = ('name', )
+        fields = ("name",)
