@@ -2,15 +2,11 @@ from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import redirect, get_object_or_404
-from rest_framework import permissions
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 
 from flutodo_api.models import ToDoItem
-from flutodo_api.serializers import (
-    ToDoItemSerializer,
-    ToDoItemCreateSerializer
-)
+from flutodo_api.serializers import ToDoItemSerializer, ToDoItemCreateSerializer
 
 
 class ToDoList(LoginRequiredMixin, APIView):
@@ -20,10 +16,9 @@ class ToDoList(LoginRequiredMixin, APIView):
     swagger_schema = None
 
     def get(self, request, *args, **kwargs):
-        queryset = ToDoItem.objects.order_by('id')
+        queryset = ToDoItem.objects.order_by("id")
         serializer = ToDoItemSerializer
-        return Response({"todos": queryset,
-                         "serializer": serializer})
+        return Response({"todos": queryset, "serializer": serializer})
 
 
 class ToDoCreate(LoginRequiredMixin, APIView):
@@ -39,7 +34,7 @@ class ToDoCreate(LoginRequiredMixin, APIView):
     def post(self, request):
         serializer = ToDoItemCreateSerializer(data=request.data)
         if not serializer.is_valid():
-            return Response({'serializer': serializer})
+            return Response({"serializer": serializer})
         serializer.save()
         return redirect("todo_list")
 
@@ -54,9 +49,9 @@ class TodoRemove(LoginRequiredMixin, APIView):
         """
         todo = get_object_or_404(ToDoItem, pk=pk)
         todo.delete()
-        messages.success(request,
-                         "Todo item {} has been deleted correctly".format(
-                             todo.name))
+        messages.success(
+            request, "Todo item {} has been deleted correctly".format(todo.name)
+        )
         return redirect("todo_list")
 
 
