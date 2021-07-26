@@ -9,7 +9,7 @@ class ToDoItemList(generics.ListAPIView):
     Returns a list of all ToDoItems
     """
     permission_classes = [permissions.IsAuthenticated]
-    queryset = ToDoItem.objects.all()
+    queryset = ToDoItem.objects.order_by('id')
     serializer_class = ToDoItemSerializer
 
 
