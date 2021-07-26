@@ -46,7 +46,6 @@ class ToDoCreate(LoginRequiredMixin, APIView):
 
 class TodoRemove(LoginRequiredMixin, APIView):
     login_url = "accounts/login"
-    permission_classes = [permissions.IsAuthenticated]
     swagger_schema = None
 
     def post(self, request, pk):
@@ -63,7 +62,6 @@ class TodoRemove(LoginRequiredMixin, APIView):
 
 class TodoComplete(LoginRequiredMixin, APIView):
     login_url = "accounts/login"
-    permission_classes = [permissions.IsAuthenticated]
     swagger_schema = None
 
     def post(self, request, pk):
@@ -78,7 +76,6 @@ class TodoComplete(LoginRequiredMixin, APIView):
 
 class TodoUncomplete(LoginRequiredMixin, APIView):
     login_url = "accounts/login"
-    permission_classes = [permissions.IsAuthenticated]
     swagger_schema = None
 
     def post(self, request, pk):
